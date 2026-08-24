@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { generateWithFallback } from "./_gemini";
+import { GoogleGenAI } from "@google/genai";
 
 export const config = {
   api: {
@@ -10,12 +10,46 @@ export const config = {
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // CORS Headers
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization"
+  );
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ error: "Method not allowed. Use POST." });
   }
 
   try {
-    const { audioBase64, mimeType, projectName, tags, autoEnhance } = req.body || {};
+    const rawKey = process.env.GEMINI_API_KEY;
+    const apiKey = rawKey ? rawKey.replace(/^["']|["']$/g, "").trim() : "";
+
+    if (!apiKey) {
+      console.error("GEMINI_API_KEY is not configured in environment variables.");
+      return res.status(400).json({
+        error: "GEMINI_API_KEY is missing in your Vercel Environment Variables. Please add GEMINI_API_KEY in Vercel Project Settings.",
+      });
+    }
+
+    let body = req.body;
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        body = {};
+      }
+    } else if (!body) {
+      body = {};
+    }
+
+    const { audioBase64, mimeType, projectName, tags, autoEnhance } = body;
     if (!audioBase64 || typeof audioBase64 !== "string") {
       return res.status(400).json({ error: "Audio data is required for transcription." });
     }
@@ -50,36 +84,60 @@ Listen carefully to the spoken voice recording:
 1. Transcribe the spoken work updates accurately, recognizing technical developer terminology, tools, libraries, code artifacts, and project tasks (e.g., APIs, pull requests, debugging, refactoring, database schemas, meetings).
 2. Clean up into concise, professional work log bullet points starting with active past-tense verbs (e.g., "Implemented", "Investigated", "Attended", "Resolved", "Refactored", "Configured").
 ${projectName ? `Project Context: ${projectName}` : ""}
-${tags && tags.length > 0 ? `Tags/Categories: ${tags.join(", ")}` : ""}
+${tags && Array.isArray(tags) && tags.length > 0 ? `Tags/Categories: ${tags.join(", ")}` : ""}
 
 Output ONLY the formatted markdown bullet points (using "- " for each point), without any conversational preambles, greetings, or meta commentary.`
       : `You are an expert audio transcriber. Listen carefully to the voice recording and transcribe the exact words spoken verbatim.
 Accurately capture technical developer terminology, acronyms, and names.
 Output ONLY the transcribed text without filler, markdown headers, or meta commentary.`;
 
-    const response = await generateWithFallback({
-      contents: [
-        {
-          inlineData: {
-            mimeType: targetMimeType,
-            data: cleanBase64,
-          },
-        },
-        {
-          text: promptText,
-        },
-      ],
-    });
+    const ai = new GoogleGenAI({ apiKey });
+    const candidateModels = ["gemini-3.7-flash", "gemini-flash-latest", "gemini-3.1-flash-lite"];
+    let transcript: string | null = null;
+    let lastError: any = null;
 
-    const transcript = response.text ? response.text.trim() : "";
-    return res.status(200).json({
-      transcript,
-      enhancedText: autoEnhance ? transcript : undefined,
+    for (const model of candidateModels) {
+      try {
+        const response = await ai.models.generateContent({
+          model,
+          contents: [
+            {
+              inlineData: {
+                mimeType: targetMimeType,
+                data: cleanBase64,
+              },
+            },
+            {
+              text: promptText,
+            },
+          ],
+        });
+
+        if (response && response.text) {
+          transcript = response.text.trim();
+          break;
+        }
+      } catch (err: any) {
+        lastError = err;
+        console.warn(`Audio model ${model} failed:`, err?.message || err);
+      }
+    }
+
+    if (transcript !== null) {
+      return res.status(200).json({
+        transcript,
+        enhancedText: autoEnhance ? transcript : undefined,
+      });
+    }
+
+    console.error("All transcription models failed:", lastError);
+    return res.status(503).json({
+      error: "Audio transcription is currently unavailable. Please try again or use live speech dictation.",
     });
   } catch (error: any) {
-    console.error("Audio transcription error:", error);
-    return res.status(503).json({
-      error: "Voice transcription is currently experiencing high demand. Please try again.",
+    console.error("Fatal audio transcription error:", error);
+    return res.status(500).json({
+      error: error?.message || "Failed to process audio transcription.",
     });
   }
 }
