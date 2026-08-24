@@ -1,0 +1,6 @@
+{
+  "name": "Work Log",
+  "description": "Personal daily work log progressive web app with voice/text entry, Gemini AI enhancement, Google Tasks follow-ups, and multi-format reports.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

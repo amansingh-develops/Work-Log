@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "user": {
+      "title": "UserProfile",
+      "description": "User profile and journal settings document",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "defaultEnhanceOn": { "type": "boolean" },
+        "tagList": { "type": "array" }
+      },
+      "required": ["userId"]
+    },
+    "project": {
+      "title": "Project",
+      "description": "Project categorization stream for work entries",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "colorTag": { "type": "string" },
+        "description": { "type": "string" },
+        "archived": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["ownerId", "name"]
+    },
+    "entry": {
+      "title": "WorkEntry",
+      "description": "Daily work log entry with raw text and Gemini AI enhancement",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "projectId": { "type": "string" },
+        "date": { "type": "string" },
+        "rawText": { "type": "string" },
+        "enhancedText": { "type": "string" },
+        "activeVersion": { "type": "string" },
+        "tags": { "type": "array" },
+        "source": { "type": "string" },
+        "audioDuration": { "type": "number" },
+        "scheduledTaskId": { "type": "string" },
+        "scheduledTaskTitle": { "type": "string" },
+        "scheduledTaskDue": { "type": "string" },
+        "deleted": { "type": "boolean" },
+        "deletedAt": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["ownerId", "projectId", "date", "rawText", "activeVersion", "tags", "source"]
+    },
+    "activityLog": {
+      "title": "ActivityLog",
+      "description": "Append-only audit trail log of user actions",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "entryId": { "type": "string" },
+        "action": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "changeSummary": { "type": "string" }
+      },
+      "required": ["ownerId", "action", "timestamp", "changeSummary"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "User profile collection"
+    },
+    "/projects/{projectId}": {
+      "schema": "project",
+      "description": "User projects collection"
+    },
+    "/entries/{entryId}": {
+      "schema": "entry",
+      "description": "Work log entries collection"
+    },
+    "/activityLog/{logId}": {
+      "schema": "activityLog",
+      "description": "Audit activity logs collection"
+    }
+  }
+}
