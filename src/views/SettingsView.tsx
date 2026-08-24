@@ -217,7 +217,7 @@ export const SettingsView: React.FC = () => {
           </div>
 
           <div className="pt-2 text-[11px] text-gray-500 dark:text-zinc-400 leading-relaxed border-t border-[#E5E7EB] dark:border-zinc-800">
-            <strong>Architecture Note:</strong> This application communicates directly via client-to-cloud gRPC/WebSocket connections to Firestore using the Google Cloud project ID <code className="font-mono text-zinc-800 dark:text-zinc-200 font-semibold">{firebaseConfig.projectId}</code> (Project Number <code className="font-mono text-zinc-800 dark:text-zinc-200 font-semibold">{firebaseConfig.messagingSenderId}</code>) managed by AI Studio. Documents live in the <code className="font-mono">/entries</code>, <code className="font-mono">/projects</code>, and <code className="font-mono">/users</code> collections.
+            <strong>Architecture Note:</strong> This application communicates directly via secure client-to-cloud connections to Firestore using the Google Cloud project <code className="font-mono text-zinc-800 dark:text-zinc-200 font-semibold">{firebaseConfig.projectId}</code>. Documents live in the <code className="font-mono">/entries</code>, <code className="font-mono">/projects</code>, and <code className="font-mono">/users</code> collections.
           </div>
         </div>
 
@@ -232,7 +232,7 @@ export const SettingsView: React.FC = () => {
                 Gemini AI Text Enhancement
               </h2>
               <p className="text-xs text-gray-400">
-                Free tier Google AI Studio Gemini model for grammar cleanup and action bullets
+                Gemini 2.5/Flash model for grammar cleanup and action bullets
               </p>
             </div>
           </div>
@@ -399,7 +399,7 @@ export const SettingsView: React.FC = () => {
             <span>Zero-Cost Cloud Infrastructure</span>
           </div>
           <p>
-            This personal application runs entirely within free tier services: Firebase Firestore Spark tier, browser-native Web Speech API, Google AI Studio Gemini API free allowance, and Google Tasks API.
+            This personal application runs entirely within cost-effective services: Firebase Firestore Spark tier, browser-native Web Speech API, Google Gemini API, and Google Tasks API.
           </p>
         </div>
       </div>

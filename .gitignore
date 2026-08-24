@@ -1,8 +1,46 @@
+# Dependencies
 node_modules/
-build/
+.pnp
+.pnp.js
+
+# Production build outputs
 dist/
+build/
 coverage/
-.DS_Store
-*.log
-.env*
+
+# Local Environment Variables & Secrets (CRITICAL: Never commit secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*
 !.env.example
+
+# Credentials & Keys
+*.pem
+*.key
+*.cert
+service-account*.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor & OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary files
+server.js
