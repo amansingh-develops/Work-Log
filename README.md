@@ -39,29 +39,85 @@ A privacy-focused, full-stack progressive web application designed for software 
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Technology Stack & Architecture
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                       Vercel Platform                       │
+│  ┌─────────────────────────┐   ┌──────────────────────────┐ │
+│  │   Vite + React SPA      │   │  Serverless Functions    │ │
+│  │   (Static Frontend)     │   │  (/api/enhance,          │ │
+│  │                         │   │   /api/transcribe-audio) │ │
+│  └───────────┬─────────────┘   └────────────┬─────────────┘ │
+└──────────────┼──────────────────────────────┼───────────────┘
+               │ (Client Auth & Data Sync)    │ (Secure Gemini AI Calls)
+               ▼                              ▼
+┌────────────────────────────┐   ┌────────────────────────────┐
+│   Firebase Console Cloud   │   │     Google Gemini AI       │
+│   • Firestore Database     │   │     • Text Enhancement     │
+│   • Firebase Authentication│   │     • Audio Transcription  │
+│   • Security Rules         │   │                            │
+└────────────────────────────┘   └────────────────────────────┘
+```
 
 | Layer | Technology |
 |---|---|
+| **Hosting & API** | **Vercel** (Frontend static build + Serverless Node.js API routes) |
 | **Frontend** | React 19, TypeScript, Tailwind CSS v4, Motion, Lucide React |
-| **Backend / API** | Node.js, Express, ESBuild, TSX |
-| **AI Processing** | `@google/genai` (Gemini 2.5 / Flash model with multi-model failover) |
-| **Persistence** | Firebase Firestore (Real-time sync, offline-ready) |
+| **Database & Auth** | **Firebase Console** (Firestore + Google Authentication) |
+| **AI Intelligence** | `@google/genai` (Gemini Flash with multi-model failover) |
 | **Document Export** | `jspdf`, `jspdf-autotable`, `docx`, `file-saver` |
 
 ---
 
-## 🚀 Getting Started
+## 🌐 Deploying to Vercel + Firebase Console
 
-### 1. Prerequisites
+Deploying the entire project using your own **Firebase Console** and **Vercel** takes under 5 minutes.
 
-- [Node.js](https://nodejs.org/) (version 18 or higher recommended)
-- [npm](https://www.npmjs.com/) or [pnpm](https://pnpm.io/)
-- A [Google Gemini API Key](https://aistudio.google.com/app/apikey)
+### Step 1: Set Up Your Firebase Project
+1. Go to the [Firebase Console](https://console.firebase.google.com/) and click **Add Project**.
+2. **Enable Firestore**:
+   - Go to **Build > Firestore Database** and click **Create Database** (choose production or test mode).
+   - In the **Rules** tab, paste the content from `firestore.rules` and click **Publish**.
+3. **Enable Authentication**:
+   - Go to **Build > Authentication > Sign-in method**.
+   - Enable **Google** provider and **Anonymous** (Guest) provider.
+4. **Get Your Web App Credentials**:
+   - Go to **Project Settings** (gear icon) > **General** > **Your Apps** > Click the **</>** (Web) icon.
+   - Register the app and copy the `firebaseConfig` keys.
 
-### 2. Installation
+---
 
-Clone the repository and install dependencies:
+### Step 2: Deploy to Vercel
+1. Push this repository to your **GitHub** account.
+2. Log in to [Vercel](https://vercel.com/) and click **Add New > Project**.
+3. Import your GitHub repository.
+4. In the **Environment Variables** section, add the following keys:
+
+| Environment Variable | Value / Description |
+|---|---|
+| `GEMINI_API_KEY` | Your [Gemini API Key](https://aistudio.google.com/app/apikey) |
+| `VITE_FIREBASE_API_KEY` | Your Firebase `apiKey` |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Your Firebase `authDomain` |
+| `VITE_FIREBASE_PROJECT_ID` | Your Firebase `projectId` |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Your Firebase `storageBucket` |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Your Firebase `messagingSenderId` |
+| `VITE_FIREBASE_APP_ID` | Your Firebase `appId` |
+| `VITE_FIREBASE_MEASUREMENT_ID` | Optional measurement ID |
+
+5. Click **Deploy**. Vercel will automatically build the React Vite frontend and configure the `/api/` serverless functions.
+
+---
+
+### Step 3: Authorize Your Vercel Domain in Firebase
+1. After Vercel gives you your production URL (e.g. `https://your-worklog.vercel.app`), go to **Firebase Console > Authentication > Settings > Authorized Domains**.
+2. Click **Add Domain** and enter your Vercel domain (`your-worklog.vercel.app`).
+
+---
+
+## 💻 Local Development Setup
+
+### 1. Installation
 
 ```bash
 git clone https://github.com/your-username/work-log.git
@@ -69,58 +125,43 @@ cd work-log
 npm install
 ```
 
-### 3. Environment Configuration
+### 2. Configure Environment
 
-Copy the example environment file and add your Gemini API key:
+Copy `.env.example` to `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` and set your key:
+Add your `GEMINI_API_KEY` and Firebase credentials to `.env`.
 
-```env
-GEMINI_API_KEY="your_actual_gemini_api_key_here"
-```
-
-> ⚠️ **Security Warning**: Never commit your `.env` file or API keys to GitHub. The `.gitignore` file is pre-configured to keep your secrets private.
-
-### 4. Running the Development Server
-
-Start the local full-stack development server on `http://localhost:3000`:
+### 3. Run Dev Server
 
 ```bash
 npm run dev
 ```
 
-### 5. Production Build
-
-To compile and launch the production build:
-
-```bash
-npm run build
-npm start
-```
+The app will be accessible at `http://localhost:3000`.
 
 ---
 
 ## 📂 Project Structure
 
 ```text
+├── api/                  # Vercel Serverless Functions (/api/enhance, /api/transcribe-audio)
 ├── src/
 │   ├── components/       # UI components (NewEntryForm, EntryCard, Modals, Navbar, etc.)
 │   ├── context/          # State management (AuthContext, WorkLogContext)
-│   ├── lib/              # Firebase & utility helper functions
-│   ├── services/         # Client-side API services (text enhancement, audio transcription)
+│   ├── lib/              # Firebase client configuration & persistence
+│   ├── services/         # Client-side API services
 │   ├── views/            # Main views (DailyFeed, AllEntries, Projects, Reports, ActivityLog, Trash, Settings)
-│   ├── types.ts          # TypeScript interfaces & data models
-│   ├── App.tsx           # Main application router and navigation shell
+│   ├── types.ts          # TypeScript interfaces & models
+│   ├── App.tsx           # Router and navigation shell
 │   └── main.tsx          # React application entry point
-├── server.ts             # Express backend server & secure Gemini AI proxy routes
-├── firestore.rules       # Firestore security rules
-├── .env.example          # Sample environment variables template
-├── .gitignore            # Git exclusion rules for private keys and build artifacts
-├── package.json          # Dependencies and scripts
+├── server.ts             # Local Express server with Vite integration
+├── vercel.json           # Vercel deployment and routing configuration
+├── firestore.rules       # Security rules for Firebase Firestore
+├── .env.example          # Sample environment variables
 └── vite.config.ts        # Vite build configuration
 ```
 
@@ -128,9 +169,9 @@ npm start
 
 ## 🔒 Privacy & Data Security
 
-- **Server-Side API Proxying**: API keys are securely kept on the backend server (`server.ts`) and are never exposed to the client browser.
-- **Direct Database Ownership**: All log documents and projects are scoped directly to your authenticated user account in Firestore with granular security rules.
-- **Local Data Portability**: Export your complete database anytime as JSON, PDF, or Word DOCX.
+- **Server-Side API Proxying**: API keys are securely kept in backend serverless functions and never exposed to the client.
+- **Direct Database Scoping**: User documents in Firestore are protected by Firestore Security Rules.
+- **Export Control**: Export your complete database anytime as JSON, PDF, or Word DOCX.
 
 ---
 

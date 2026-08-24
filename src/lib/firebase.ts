@@ -22,10 +22,19 @@ import {
 } from "firebase/firestore";
 import firebaseConfigData from "../../firebase-applet-config.json";
 
-export const firebaseConfig = firebaseConfigData;
+// Support both custom environment variables (e.g. for Vercel deployment) and bundled config
+export const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || firebaseConfigData.apiKey,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || firebaseConfigData.authDomain,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || firebaseConfigData.projectId,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || firebaseConfigData.storageBucket,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || firebaseConfigData.messagingSenderId,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || firebaseConfigData.appId,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || firebaseConfigData.measurementId || "",
+};
 
 // Initialize Firebase App
-const app = !getApps().length ? initializeApp(firebaseConfigData) : getApp();
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 // Initialize Firestore with IndexedDB Multi-Tab Persistent Local Cache
 let dbInstance: Firestore;
