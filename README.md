@@ -4,6 +4,48 @@ A privacy-focused, full-stack progressive web application designed for software 
 
 ---
 
+## 🖥️ UI & Application Experience
+
+```text
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│  ⚡ WorkLog       [ 📅 Daily Feed ]  [ 📁 Projects ]  [ 📊 Reports ]  [ 🕒 Activity ]  [ 🌙 ]  [ 👤 User ] │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                             │
+│   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
+│   │  ✍️ Log Today's Work                                                                 │   │
+│   │ ┌─────────────────────────────────────────────────────────────────────────────────┐ │   │
+│   │ │ What did you accomplish? Type notes or use voice dictation...                   │ │   │
+│   │ │                                                                                 │ │   │
+│   │ └─────────────────────────────────────────────────────────────────────────────────┘ │   │
+│   │  [ 📁 Project: Core API ▾ ]  [ #tags ▾ ]   [ 🎙️ Live Dictate ] [ ⏺️ AI Record ]  [ ⚡ Log Entry ] │
+│   └─────────────────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                             │
+│   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
+│   │  📌 Daily Log Entries                                              [ 🔍 Search ] [ 🗓️ Date ▾ ] │
+│   │ ┌─────────────────────────────────────────────────────────────────────────────────┐ │   │
+│   │ │ 🟢 Core API  •  10:30 AM                           [ 🔄 Dual Version ] [ 📅 Schedule ] [ ✏️ ]│ │
+│   │ │ • Implemented rate-limiting middleware with Redis caching on v2 endpoints.      │ │   │
+│   │ │ • Reduced cold-start serverless response latency by 35% across API regions.     │ │   │
+│   │ │ #performance #backend                                                            │ │   │
+│   │ └─────────────────────────────────────────────────────────────────────────────────┘ │   │
+│   │ ┌─────────────────────────────────────────────────────────────────────────────────┐ │   │
+│   │ │ 🔵 Mobile App  •  02:15 PM                                                      │ │   │
+│   │ │ • Resolved biometric authentication loop on iOS 18 devices.                     │ │   │
+│   │ │ #bugfix #ios                                                                    │ │   │
+│   │ └─────────────────────────────────────────────────────────────────────────────────┘ │   │
+│   └─────────────────────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Key UI Capabilities:
+- **🎛️ Clean Single-Page Work Dashboard**: Instant access to your daily feed, real-time filters, quick logging bar, and project tags.
+- **🔄 Dual-Version Toggle Switch**: Seamlessly toggle between your raw transcripts and Gemini AI formatted bullet points with zero data loss.
+- **🎙️ Visual Audio Recorder**: Integrated waveform audio recording with automatic transcription and technical term recognition.
+- **📊 Interactive Report Builder**: Live preview for generating formatted Standup Summaries, Weekly Rollups, and one-click PDF / Word / Markdown exports.
+- **🌓 Dynamic Light & Dark Mode**: Ergonomic visual styling with high contrast readability and smooth layout transitions.
+
+---
+
 ## ✨ Features
 
 - **🎙️ Multi-Modal Input**

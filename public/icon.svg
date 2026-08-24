@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Outer black rounded frame -->
+  <rect width="512" height="512" rx="128" fill="#000000"/>
+  <!-- Inner white rounded canvas -->
+  <rect x="16" y="16" width="480" height="480" rx="144" fill="#FFFFFF"/>
+  <!-- Center black pill emblem -->
+  <rect x="144" y="216" width="224" height="80" rx="40" fill="#000000"/>
+</svg>
