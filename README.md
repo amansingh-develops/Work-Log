@@ -4,45 +4,81 @@ A privacy-focused, full-stack progressive web application designed for software 
 
 ---
 
-## 🖥️ UI & Application Experience
+## 📸 Visual UI Tour & Feature Walkthrough
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────────────────────┐
-│  ⚡ WorkLog       [ 📅 Daily Feed ]  [ 📁 Projects ]  [ 📊 Reports ]  [ 🕒 Activity ]  [ 🌙 ]  [ 👤 User ] │
-├─────────────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                             │
-│   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
-│   │  ✍️ Log Today's Work                                                                 │   │
-│   │ ┌─────────────────────────────────────────────────────────────────────────────────┐ │   │
-│   │ │ What did you accomplish? Type notes or use voice dictation...                   │ │   │
-│   │ │                                                                                 │ │   │
-│   │ └─────────────────────────────────────────────────────────────────────────────────┘ │   │
-│   │  [ 📁 Project: Core API ▾ ]  [ #tags ▾ ]   [ 🎙️ Live Dictate ] [ ⏺️ AI Record ]  [ ⚡ Log Entry ] │
-│   └─────────────────────────────────────────────────────────────────────────────────────┘   │
-│                                                                                             │
-│   ┌─────────────────────────────────────────────────────────────────────────────────────┐   │
-│   │  📌 Daily Log Entries                                              [ 🔍 Search ] [ 🗓️ Date ▾ ] │
-│   │ ┌─────────────────────────────────────────────────────────────────────────────────┐ │   │
-│   │ │ 🟢 Core API  •  10:30 AM                           [ 🔄 Dual Version ] [ 📅 Schedule ] [ ✏️ ]│ │
-│   │ │ • Implemented rate-limiting middleware with Redis caching on v2 endpoints.      │ │   │
-│   │ │ • Reduced cold-start serverless response latency by 35% across API regions.     │ │   │
-│   │ │ #performance #backend                                                            │ │   │
-│   │ └─────────────────────────────────────────────────────────────────────────────────┘ │   │
-│   │ ┌─────────────────────────────────────────────────────────────────────────────────┐ │   │
-│   │ │ 🔵 Mobile App  •  02:15 PM                                                      │ │   │
-│   │ │ • Resolved biometric authentication loop on iOS 18 devices.                     │ │   │
-│   │ │ #bugfix #ios                                                                    │ │   │
-│   │ └─────────────────────────────────────────────────────────────────────────────────┘ │   │
-│   └─────────────────────────────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+Explore the complete user experience of **WorkLog**, from rapid multi-modal logging to automated document export.
 
-### Key UI Capabilities:
-- **🎛️ Clean Single-Page Work Dashboard**: Instant access to your daily feed, real-time filters, quick logging bar, and project tags.
-- **🔄 Dual-Version Toggle Switch**: Seamlessly toggle between your raw transcripts and Gemini AI formatted bullet points with zero data loss.
-- **🎙️ Visual Audio Recorder**: Integrated waveform audio recording with automatic transcription and technical term recognition.
-- **📊 Interactive Report Builder**: Live preview for generating formatted Standup Summaries, Weekly Rollups, and one-click PDF / Word / Markdown exports.
-- **🌓 Dynamic Light & Dark Mode**: Ergonomic visual styling with high contrast readability and smooth layout transitions.
+---
+
+### 1. 📅 Daily Feed & Quick Work Logger
+*The central workspace view providing a distraction-free daily log interface with real-time Firestore synchronization.*  
+*Supports high-speed keyboard capture, custom project streams, live browser speech dictation, and Gemini AI voice-note transcription.*
+
+![Daily Feed & Quick Work Logger](docs/screenshots/01-daily-feed-quick-log.png)
+
+---
+
+### 2. 🗂️ All Entries & Historical Archive
+*A chronological, searchable archive aggregating all historical work logs grouped flexibly by Date or Project.*  
+*Features multi-criteria filtering across project streams, date ranges, custom tags, and active AI-enhanced status.*
+
+![All Entries & Historical Archive](docs/screenshots/02-all-entries-archive.png)
+
+---
+
+### 3. ✍️ Dual-Version Entry Editor
+*A non-destructive modal editor that preserves both your verbatim voice transcripts and AI-cleaned bullet points side-by-side.*  
+*Allows fine-tuning tags, updating project assignments, modifying timestamps, and toggling active display versions on the fly.*
+
+![Dual-Version Entry Editor](docs/screenshots/03-edit-entry-modal.png)
+
+---
+
+### 4. 📁 Projects & Taxonomy Streams
+*Dedicated stream management enabling users to organize and isolate work logs across distinct client or feature streams.*  
+*Displays active entry counts, creation timestamps, archive status, and one-click stream customization with color badges.*
+
+![Projects & Taxonomy Streams](docs/screenshots/04-projects-management.png)
+
+---
+
+### 5. 📊 Reports & Export Center
+*An interactive reporting dashboard to synthesize accomplishments across custom date ranges and project scopes.*  
+*Provides dynamic rollup metrics (total entries, active days, top tags) with instant one-click export to PDF, Word (DOCX), and Plain Text.*
+
+![Reports & Export Center](docs/screenshots/05-reports-and-export.png)
+
+---
+
+### 6. 🕒 Activity Audit Log & System History
+*A real-time, tamper-evident audit trail capturing every system event including log creation, edits, version switches, and data exports.*  
+*Equipped with quick summary metrics, action-type filters, and instant CSV / JSON export for compliance and backups.*
+
+![Activity Audit Log & System History](docs/screenshots/06-activity-audit-log.png)
+
+---
+
+### 7. 🗑️ Trash Bin & Soft-Delete Recovery
+*A fail-safe retention space that prevents accidental data loss with dedicated two-step soft-deletion.*  
+*Allows instant one-click restoration of accidentally deleted work logs or permanent removal when needed.*
+
+![Trash Bin & Soft-Delete Recovery](docs/screenshots/07-trash-recovery.png)
+
+---
+
+### 8. ⚡ Instant Export & Download Notification
+*Seamless client-side report compilation generating structured, standalone document artifacts instantly.*  
+*Features automated date-range naming conventions and direct browser download notifications.*
+
+![Instant Export & Download Notification](docs/screenshots/08-export-download-flow.png)
+
+---
+
+### 9. 📄 Exported Daily Work Log PDF Document
+*Executive-ready, clean PDF formatting tailored for stakeholder reviews, manager 1-on-1s, and client billing.*  
+*Includes high-contrast branding headers, summary metrics, date-stratified task grouping, and impact-driven bullet points.*
+
+![Exported Daily Work Log PDF Document](docs/screenshots/09-exported-pdf-document.png)
 
 ---
 
@@ -191,6 +227,8 @@ The app will be accessible at `http://localhost:3000`.
 
 ```text
 ├── api/                  # Vercel Serverless Functions (/api/enhance, /api/transcribe-audio)
+├── docs/                 # Project documentation & UI screenshots
+│   └── screenshots/      # High-resolution feature walkthrough captures
 ├── src/
 │   ├── components/       # UI components (NewEntryForm, EntryCard, Modals, Navbar, etc.)
 │   ├── context/          # State management (AuthContext, WorkLogContext)
